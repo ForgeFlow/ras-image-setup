@@ -1,0 +1,16 @@
+[Unit]
+Description=RFID Attendance System Launcher
+After=network.target
+
+[Service]
+Type=simple
+PermissionsStartOnly=true
+SyslogIdentifier=ras-portal
+User=root
+Group=root
+ExecStart=/usr/bin/python3 /home/pi/ras/launcher.py -d sh1106
+WorkingDirectory=/home/pi
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target
