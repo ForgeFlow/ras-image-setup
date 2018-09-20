@@ -29,16 +29,17 @@ if [ ! -f $FLAG ]; then
    echo "This is the first boot"
    systemctl stop dhcpcd
    systemctl disable dhcpcd
-  #  apt-get install -y network-manager
-  #  apt-get clean
+   apt-get update
+   apt-get install -y network-manager
+   apt-get clean
    systemctl enable NetworkManager
    systemctl start NetworkManager
 
-  #  systemctl enable ras-portal.service
-  #  systemctl start ras-portal.service
+   systemctl enable ras-portal.service
+   systemctl start ras-portal.service
 
-  #  systemctl enable ras-launcher.service
-  #  systemctl start ras-launcher.service
+   systemctl enable ras-launcher.service
+   systemctl start ras-launcher.service
 
 
    #the next line creates an empty file so it won't run the next boot

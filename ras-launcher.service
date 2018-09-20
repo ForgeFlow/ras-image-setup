@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 PermissionsStartOnly=true
-SyslogIdentifier=ras-portal
+SyslogIdentifier=ras-launcher
 User=root
 Group=root
 ExecStart=/usr/bin/python3 /home/pi/ras/launcher.py -d sh1106

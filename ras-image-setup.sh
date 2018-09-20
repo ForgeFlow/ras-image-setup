@@ -59,3 +59,6 @@ chown root: /lib/systemd/system/ras-launcher.service
 # Setup resin-wifi-connect
 
 bash /home/pi/ras-image-setup/wifi-connect-raspbian-install.sh
+
+
+apt install -y -d network-manager
