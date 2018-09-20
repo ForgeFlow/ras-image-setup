@@ -8,8 +8,7 @@ apt update && apt install -yq \
     python3-smbus i2c-tools git python3-dev python3-pip \
     libfreetype6-dev libjpeg-dev build-essential libsdl-dev \
     libportmidi-dev libsdl-ttf2.0-dev libsdl-mixer1.2-dev libsdl-image1.2-dev libopenjp2-7 \
-    python3-RPi.GPIO dnsmasq hostapd isc-dhcp-server
-apt clean
+    python3-RPi.GPIO hostapd
 rm -rf /var/lib/apt/lists/*
 
 if [ ! -d /home/pi/ras ]
@@ -26,7 +25,6 @@ cp -f /home/pi/ras-image-setup/config.txt /boot/
 cp -f /home/pi/ras-image-setup/modules /etc/
 cp -f /home/pi/ras-image-setup/rc.local /etc/
 mv /home/pi/ras/dicts/credentials.json.sample /home/pi/ras/dicts/credentials.json
-mv /home/pi/ras/dicts/data.json.sample /home/pi/ras/dicts/data.json
 
 git clone https://github.com/lthiery/SPI-Py.git
 cd SPI-Py
@@ -56,9 +54,11 @@ chown root: /lib/systemd/system/ras-launcher.service
 # systemctl enable ras-launcher.service
 # systemctl start ras-launcher.service
 
-# Setup resin-wifi-connect
 
+# Setup resin-wifi-connect
+apt update && \
+apt install -y -d network-manager && \
+apt install -y network-manager 
 bash /home/pi/ras-image-setup/wifi-connect-raspbian-install.sh
 
-
-apt install -y -d network-manager
+apt clean
