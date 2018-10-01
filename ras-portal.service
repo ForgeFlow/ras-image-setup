@@ -8,7 +8,7 @@ PermissionsStartOnly=true
 SyslogIdentifier=ras-portal
 User=root
 Group=root
-ExecStart=/usr/bin/python3 /home/pi/ras/web/config-server.py
+ExecStart=/usr/bin/python3 /home/pi/ras/config-server.py
 WorkingDirectory=/home/pi
 StandardOutput=journal+console
 
