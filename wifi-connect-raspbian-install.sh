@@ -5,7 +5,7 @@ set -u
 trap "exit 1" TERM
 export TOP_PID=$$
 
-: "${WFC_REPO:=resin-io/resin-wifi-connect}"
+: "${WFC_REPO:=balena-io/wifi-connect}"
 : "${WFC_INSTALL_ROOT:=/usr/local}"
 
 SCRIPT='raspbian-install.sh'
@@ -69,95 +69,23 @@ check_os_version() {
         _version=$(grep -oP 'VERSION="\K[^"]+' /etc/os-release)
     fi
 
-    if [ "$_version" != "9 (stretch)" ]; then
-        err "Distribution not based on Debian 9 (stretch)"
+    if [ "$_version" == "8 (jessie)" ]; then
+        err "Distributions based on Debian 8 (jessie) are not supported"
     fi
 }
 
 activate_network_manager() {
-    if [ "$(service_load_state NetworkManager)" = "not-found" ]; then
-        say 'NetworkManager is not installed'
+    say 'Downloading NetworkManager...'
 
-        confirm_installation
+    ensure sudo apt-get update
 
-        # Do not install NetworkManager over running dhcpcd to avoid clashes
+    ensure sudo apt-get install -y -d network-manager
 
-        say 'Downloading NetworkManager...'
+    say 'Installing NetworkManager...'
 
-        ensure sudo apt-get update
+    ensure sudo apt-get install -y network-manager
 
-        ensure sudo apt-get install -y -d network-manager
-
-        # disable_dhcpcd
-
-        say 'Installing NetworkManager...'
-
-        ensure sudo apt-get install -y network-manager
-
-        ensure sudo apt-get clean
-    else
-        say 'NetworkManager is already installed'
-
-        if [ "$(service_active_state NetworkManager)" = "active" ]; then
-            say 'NetworkManager is already active'
-        else
-            confirm_installation
-
-            # disable_dhcpcd
-
-            say 'Activating NetworkManager...'
-
-            # ensure sudo systemctl enable NetworkManager
-
-            # ensure sudo systemctl start NetworkManager
-        fi
-    fi
-
-    if [ ! "$(service_active_state NetworkManager)" = "active" ]; then
-        say 'Cannot activate NetworkManager'
-    fi
-}
-
-disable_dhcpcd() {
-    if [ "$(service_active_state dhcpcd)" = "active" ]; then
-        say 'Deactivating and disabling dhcpcd...'
-
-        # ensure sudo systemctl stop dhcpcd
-
-        # ensure sudo systemctl disable dhcpcd
-
-        if [ "$(service_active_state dhcpcd)" = "active" ]; then
-            say 'Cannot deactivate dhcpcd'
-        else
-            say 'dhcpcd successfully deactivated and disabled'
-        fi
-    else
-        say 'dhcpcd is not active'
-    fi
-}
-
-service_load_state() {
-    # ensure systemctl -p LoadState --value show "$1"
-    printf 'ensure systemctl -p LoadState --value show "$1"'
-}
-
-service_active_state() {
-    # ensure systemctl -p ActiveState --value show "$1"
-    printf 'ensure systemctl -p ActiveState --value show "$1"'
-}
-
-confirm_installation() {
-    if [ "$CONFIRMATION" = false ]; then
-        return
-    fi
-
-    printf '\33[1;36m%s:\33[0m ' "$NAME"
-
-    # read -r -p "Continue to install NetworkManager and disable dhcpcd? [y/N] " response
-    # response=${response,,}  # convert to lowercase
-    # if [[ ! $response =~ ^(yes|y)$ ]]; then
-    #     exit 0
-    # fi
+    ensure sudo apt-get clean
 }
 
 install_wfc() {
@@ -213,4 +141,4 @@ ensure() {
     fi
 }
 
-main "$@" || exit 1
+main "$@"

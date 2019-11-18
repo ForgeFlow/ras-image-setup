@@ -35,9 +35,6 @@ if [ ! -f $FLAG ]; then
   #  systemctl enable NetworkManager
   #  systemctl start NetworkManager
 
-   systemctl enable ras-portal.service
-   systemctl start ras-portal.service
-
    systemctl enable ras-launcher.service
    systemctl start ras-launcher.service
 

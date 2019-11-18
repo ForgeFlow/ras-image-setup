@@ -54,3 +54,6 @@ dtparam=spi=on
 
 # Enable audio (loads snd_bcm2835)
 dtparam=audio=on
+
+# Enable watchdog
+dtparam=watchdog=on

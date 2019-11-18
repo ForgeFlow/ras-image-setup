@@ -3,13 +3,15 @@ Description=RFID Attendance System Launcher
 After=network.target
 
 [Service]
+Restart=always
+RestartSec=3
 Type=simple
 PermissionsStartOnly=true
 SyslogIdentifier=ras-launcher
 User=root
 Group=root
-ExecStart=/usr/bin/python3 /home/pi/ras/launcher.py -d sh1106
-WorkingDirectory=/home/pi
+ExecStart=/usr/bin/python3 launcher.py -d sh1106
+WorkingDirectory=/home/pi/ras
 StandardOutput=journal+console
 
 [Install]
